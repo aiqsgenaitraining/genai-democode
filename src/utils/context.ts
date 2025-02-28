@@ -15,19 +15,19 @@ export const getContext = async (message: string, namespace: string, maxTokens =
   minScore = 0.5, getOnlyText = true): Promise<string | ScoredPineconeRecord[]> => {
 
   // Get the embeddings of the input message
-  // const embedding = await getEmbeddings(message);
+  //const embedding = await getEmbeddings(message);
   const embedding = await getEmbeddingsCohere(message);
   console.log("Embedding length: ", embedding.length)
 
   // Retrieve the matches for the embeddings from the specified namespace
-  // const matches = await getMatchesFromEmbeddings(embedding, 3, namespace); // pinecone
-  const matchesQdrant = await getMatchesFromEmbeddingsQdrant(embedding, 3, "genaitraining"); 
+   const matches = await getMatchesFromEmbeddings(embedding, 3, namespace); // pinecone
+  //const matchesQdrant = await getMatchesFromEmbeddingsQdrant(embedding, 3, "genaitraining"); 
 
-  // const docs = await getMatches(matches, minScore, getOnlyText); // pinecone
-  const docs = await getMatchesQdrant(matchesQdrant, minScore, getOnlyText); // qdrant
+  const docs = await getMatches(matches, minScore, getOnlyText); // pinecone
+  //const docs = await getMatchesQdrant(matchesQdrant, minScore, getOnlyText); // qdrant
 
   console.log("Docs length: ", docs.length)
-  // console.log("Docs 0: ", docs[0])
+  console.log("Docs 0: ", docs[0])
   // Join all the chunks of text together, truncate to the maximum number of tokens, and return the result
   return docs.join("\n").substring(0, maxTokens)
 }

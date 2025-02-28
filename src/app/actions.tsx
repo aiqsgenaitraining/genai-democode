@@ -42,7 +42,11 @@ export async function continueTextConversationGemini(messages: CoreMessage[]) {
 }
 export async function continueTextConversationRAG(messages: CoreMessage[]) {
   console.log("RAG for: ", messages[messages.length - 1].content)
-  const context = await getContext(messages[messages.length - 1].content)
+  const lastMessageContent = messages[messages.length - 1].content;
+  if (typeof lastMessageContent !== 'string') {
+    throw new Error('Last message content must be a string');
+  }
+  const context = await getContext(lastMessageContent, "pinecone" as string);
   console.log("Context Length: ", context.length)
 
   const prompt = [
