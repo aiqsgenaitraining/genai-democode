@@ -1,7 +1,8 @@
 from langchain_community.embeddings import OpenAIEmbeddings, CohereEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.vectorstores import Pinecone as PineconeVectorStore
+# from langchain_community.vectorstores import Pinecone as PineconeVectorStore
+from langchain_pinecone import PineconeVectorStore
 from pinecone import Pinecone, ServerlessSpec
 import os
 
@@ -16,7 +17,7 @@ client = Pinecone(api_key=PINECONE_API_KEY)
 index_name = os.environ.get('PINECONE_INDEX')
 index = client.Index(index_name)
 
-pdf_file = "./genai-principles.pdf"  # Path to your PDF file
+pdf_file = "./Maharashtra-web.pdf"  # Path to your PDF file
 
 # Load PDF using LangChain's PyPDFLoader
 pdf_loader = PyPDFLoader(pdf_file)
@@ -36,6 +37,7 @@ pages = text_splitter.split_documents(document)
 print("Split document into pages")
 
 # Insert data into Pinecone
-PineconeVectorStore.from_documents(pages, embeddings, index_name=index_name)
+pineconeVS = PineconeVectorStore(index=index, embedding=embeddings, index_name=index_name)
+pineconeVS.from_documents(pages, embeddings, index_name=index_name)
 print(f"Inserted {len(pages)} pages into Pinecone Index: {index_name}")
 

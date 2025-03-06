@@ -31,7 +31,7 @@ if collection_name not in [c.name for c in collections.collections]:
         ),
     )
 
-pdf_file = "./genai-principles.pdf"  # Path to your PDF file
+pdf_file = "./Maharashtra-web.pdf"  # Path to your PDF file
 
 # Load PDF using LangChain's PyPDFLoader
 pdf_loader = PyPDFLoader(pdf_file)

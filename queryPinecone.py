@@ -1,6 +1,7 @@
 from pinecone import Pinecone, ServerlessSpec
 import os
-from langchain_community.embeddings import OpenAIEmbeddings
+import sys
+from langchain_community.embeddings import OpenAIEmbeddings, CohereEmbeddings
 
 # Initialize Pinecone
 PINECONE_API_KEY = os.environ.get('PINECONE_API_KEY')
@@ -14,8 +15,10 @@ index_name = os.environ.get('PINECONE_INDEX')
 index = client.Index(index_name)
 
 # Initialize OpenAI Embeddings (or another model of your choice)
-embeddings = OpenAIEmbeddings()
-
+# embeddings = OpenAIEmbeddings()
+embeddings = CohereEmbeddings(cohere_api_key=os.environ.get("COHERE_API_KEY"),
+                              model=os.environ.get("COHERE_EMBEDDING_MODEL"),
+                              user_agent="langchain")
 # Query the index
 def query_index(query_text, top_k=3):
     # Generate embeddings for the query text
@@ -39,7 +42,11 @@ def query_index(query_text, top_k=3):
     return results
 
 # Test
-query = "What are the key Generative AI principles?"
+if len(sys.argv) < 2:
+    print("Please provide your Query as argument")
+    sys.exit(1)
+
+query = sys.argv[1]
 results = query_index(query)
 
 print("\nSearch Results:")
