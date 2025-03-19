@@ -34,5 +34,6 @@ Given the following SQL tables, your job is to write queries given a user’s re
       Phone varchar(20),
       PRIMARY KEY (CustomerID)
     );
+    
 USER
 Write a SQL query which computes the average total order value for all orders on 2023-04-01.

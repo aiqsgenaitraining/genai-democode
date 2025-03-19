@@ -47,7 +47,7 @@ async function getMatches(matches: ScoredPineconeRecord<Metadata>[],
     let docs = matches ? qualifyingDocs.map(match => (match.metadata as Metadata).text) : [];
     return docs;
 }
-async function getMatchesQdrant(matches: [], minScore: number, getOnlyText: boolean){
+async function getMatchesQdrant(matches: { payload: { page_content: string } }[], minScore: number, getOnlyText: boolean){
     // Filter out the matches that have a score lower than the minimum score
     const qualifyingDocs = matches // matches.filter(m => m.score && m.score > minScore);
     console.log("Qualifying docs length: ", qualifyingDocs.length)

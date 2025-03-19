@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card"
 import { type CoreMessage } from 'ai';
 import { useState } from 'react';
-import { continueTextConversationGemini ,continueTextConversationRAG} from '@/app/actions';
+import { continueTextConversationGemini ,continueTextConversationRAG, continueTextConversationSQL} from '@/app/actions';
 import { readStreamableValue } from 'ai/rsc';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -12,11 +12,11 @@ import { IconArrowUp } from '@/components/ui/icons';
 
 export const maxDuration = 30;
 interface ChatProps {
-  isRag?: boolean;
+  chatType?: string;
 }
 
 
-export default function Chat({ isRag = false }: ChatProps) {
+export default function Chat({ chatType = 'SIMPLE' }: ChatProps) {
   const [messages, setMessages] = useState<CoreMessage[]>([]);
   const [input, setInput] = useState<string>('');  
 
@@ -29,9 +29,11 @@ export default function Chat({ isRag = false }: ChatProps) {
     setMessages(newMessages);
     setInput('');
     let result:any = ''
-    if(isRag==true)
+    if(chatType=='RAG')
       result = await continueTextConversationRAG(newMessages);
-    else
+    else if(chatType == 'SQL')
+      result = await continueTextConversationSQL(newMessages);
+    else 
       result = await continueTextConversationGemini(newMessages);
         
 
