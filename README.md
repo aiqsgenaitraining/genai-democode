@@ -1,45 +1,79 @@
-1. Install vscode 
-VS CODE 
+# GenAI React Setup Guide
 
-For MAC - https://code.visualstudio.com/docs/setup/mac 
+## 1. Install Visual Studio Code
+- [VS Code for MAC](https://code.visualstudio.com/docs/setup/mac)
+- [VS Code for Windows](https://code.visualstudio.com/docs/setup/windows)
 
-For Windows - https://code.visualstudio.com/docs/setup/windows  
+## 2. Install Python
+### For Windows:
+1. Download and install from [Python 3.13.2](https://www.python.org/ftp/python/3.13.2/python-3.13.2-amd64.exe)
+2. Default installation path: `C:/Users/<userid>/AppData/Local/Microsoft/WindowsApps`
+3. Configure Environment Variables:
+   - Edit PATH to include `C:/Users/<userid>/AppData/Local/Microsoft/WindowsApps`
+4. Verify installation:
+   ```bash
+   python --version
+   pip --version
+   ```
 
-2. Install Python. 
-For Windows:  https://www.python.org/ftp/python/3.13.2/python-3.13.2-amd64.exe
-It should typically install in C:/Users/<userid>/AppData/Local/Microsoft/WindowsApps
-Edit Environment variables and set PATH to C:/Users/<userid>/AppData/Local/Microsoft/WindowsApps
-Verify with python --version
-Verify with pip --version
+## 3. Project Setup
+1. Clone the git repository (provided during the live session)
+2. Open VS Code
+3. Open the cloned repository folder
+4. Open terminal window
+5. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-3. Clone git repository(mention git repository url here) in a folder
+## 4. Python Environment Setup
+```bash
+# Create virtual environment
+python -m venv genai      # For MacOS use python3 instead
 
-4. Open VS code
+# Activate virtual environment
+.\genai\Scripts\activate.bat  # For MacOS use: source ./genai/bin/activate
 
-5. Open folder (where you have cloned the repository)
+# Install Python packages
+pip install pypdf langchain langchain_community pinecone langchain_pinecone cohere
+```
 
-6. Open terminal window
+## 5. Environment Configuration
+1. Create `.env.local` with the following variables:
+   ```env
+   COHERE_API_KEY=<Get from https://dashboard.cohere.com/api-keys>
+   COHERE_EMBEDDING_MODEL=embed-english-v3.0
+   GOOGLE_GENERATIVE_AI_API_KEY=<Your API Key>
+   PINECONE_API_KEY=<Get from https://app.pinecone.io/>
+   PINECONE_INDEX=genaitraining
+   PINECONE_ENV=us-east-1
+   ```
 
-7. npm install 
+2. Set environment variables in terminal:
+   ```bash
+   # Set these variables in your terminal session
+   set PINECONE_API_KEY=<your-key>
+   set PINECONE_ENV=us-east-1
+   set PINECONE_INDEX=genaitraining
+   set COHERE_API_KEY=<your-key>
+   set COHERE_EMBEDDING_MODEL=embed-english-v3.0
+   ```
 
-8. python -m venv genai      ### MacOS would have python3 instead of python
-9. .\genai\Scripts\activate.bat ### MacOS use source .\genai\bin\activate
-10. pip install pypdf langchain langchain_community pinecone langchain_pinecone
-11. pip install qdrant-client ### NOT REQUIRED
-12. pip install cohere
-13. SET PINECONE_API_KEY, PINECONE_ENV, PINECONE_INDEX, QDRANT_URL, QDRANT_API_KEY, COHERE_API_KEY, COHERE_EMBEDDING_MODEL in command line so that python scripts can access them
-14. Set following env variables in .env.local
-    COHERE_API_KEY=<>    From https://dashboard.cohere.com/api-keys
-    COHERE_EMBEDDING_MODEL=embed-english-v3.0
-    GOOGLE_GENERATIVE_AI_API_KEY=<>
-    PINECONE_API_KEY=<>  From https://app.pinecone.io/
-    PINECONE_INDEX=genaitraining
-    PINECONE_ENV=us-east-1
+## 6. Pinecone Setup
+Create a new index with these specifications:
+- Type: Manual Index
+- Name: "genaitraining"
+- Dimension: 1024
+- Cloud: AWS
+- Region: us-east-1
 
-15. Create Index in Pinecone -> Manual Index -> name "genaitraining" -> dimension 1024 -> aws -> Region: us-east-1
-
-16. Upload pdf to pinecone
+## 7. Data Upload
+Upload PDF to Pinecone:
+```bash
 python pineconeUpload.py
+```
 
-16. To run the application:
+## 8. Run the Application
+```bash
 npm run dev
+```
