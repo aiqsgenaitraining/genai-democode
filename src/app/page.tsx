@@ -1,7 +1,6 @@
 // app/page.tsx (Server Component)
 import { LuBrain } from 'react-icons/lu';
 import Link from 'next/link';
-import SqlButton from '@/components/executeSQL';
 import { JSX } from 'react';
 
 
