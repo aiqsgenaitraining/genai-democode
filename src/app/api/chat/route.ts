@@ -1,24 +1,22 @@
 import { google } from '@ai-sdk/google';
 import { streamText } from 'ai';
 import { tools } from '@/ai/tools';
-import { GoogleGenAI, Type } from '@google/genai';
-import { weatherFunctionDeclaration, getWeatherData } from './weatherTool';
+// import { GoogleGenAI, Type } from '@google/genai';
+// import { weatherFunctionDeclaration, getWeatherData } from './weatherTool';
 
 export async function POST(request: Request) {
   const { messages } = await request.json();
-  console.log('Messages:', messages);
-
-  // console.log("Tools: ", tools);
-  // const result = streamText({
-  //   model: google('gemini-2.0-flash'),
-  //   system: 'You are a friendly assistant! Do not use the icon file returned in tools in the response',
-  //   messages,
-  //   maxSteps: 5,
-  //   tools,
-  // });
-  // console.log("Result: ", result);
-  // return result.toDataStreamResponse();
-
+  
+  const result = streamText({
+    model: google('gemini-2.0-flash'),
+    system: 'You are a friendly assistant! Do not use the icon file returned in tools in the response',
+    messages,
+    maxSteps: 5,
+    tools,
+  });
+  
+  return result.toDataStreamResponse();
+/*
   let msglength = messages.length;
   const contents = [
     {
@@ -59,6 +57,6 @@ export async function POST(request: Request) {
     console.log("No function call found in the response.");
     console.log(response.text);
   }
-
+*/
 
 }
