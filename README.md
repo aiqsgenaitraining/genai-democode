@@ -6,7 +6,7 @@
 
 ## 2. Install Python
 ### For Windows:
-1. Download and install from [Python 3.13.2](https://www.python.org/ftp/python/3.13.2/python-3.13.2-amd64.exe)
+1. Download and install from [Python 3.12.10](https://www.python.org/downloads/release/python-31210/)
 2. Default installation path: `C:/Users/<userid>/AppData/Local/Microsoft/WindowsApps`
 3. Configure Environment Variables:
    - Edit PATH to include `C:/Users/<userid>/AppData/Local/Microsoft/WindowsApps`
