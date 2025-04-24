@@ -31,13 +31,12 @@ export default function Chat({ chatType = 'SIMPLE' }: ChatProps) {
     let result:any = ''
     if(chatType=='RAG')
       result = await continueTextConversationRAG(newMessages);
-    else if(chatType == 'SQL')
-      result = await continueTextConversationSQL(newMessages);
     else 
       result = await continueTextConversationGemini(newMessages);
-        
+    
 
     for await (const content of readStreamableValue(result)) {
+      console.log("Response: ", content);
       setMessages([
         ...newMessages,
         {
@@ -46,7 +45,9 @@ export default function Chat({ chatType = 'SIMPLE' }: ChatProps) {
         },
       ]);
     }
+   
   }
+  
   
   return (    
     <div className="group w-full overflow-auto ">

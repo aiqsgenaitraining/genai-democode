@@ -172,6 +172,7 @@ export async function continueTextConversation(messages: CoreMessage[]) {
 }
 
 export async function continueTextConversationGemini(messages: CoreMessage[]) {
+  console.log("Gemini for: ", messages)
   
   const result = await streamText({
     model: google('gemini-1.5-flash-latest'),
@@ -205,17 +206,21 @@ export async function continueTextConversationRAG(messages: CoreMessage[]) {
   ];
 
   try {
-    const model = "gemini-1.5-flash"
+  
+    const model = "gemini-1.5-flash-latest"
     console.log("RAG model: ", model);
-    const result = await streamText({
+    const result =  streamText({
       model: google(model),
       // model: openai(model),
       messages: [...(prompt as CoreMessage[]), ...messages.filter((message) => message.role === 'user')],
+    
     });
 
-    console.log("RAG response streaming...");
+    const stream = createStreamableValue(result.textStream);
+    
+    return stream.value;
 
-    return createStreamableValue(result.text).value;
+   // return createStreamableValue(result.text).value;
   } catch (error) {
     console.error("Error in RAG conversation:", error);
     throw new Error("Failed to fetch AI response.");
@@ -245,7 +250,7 @@ export async function continueTextConversationSQL(messages: CoreMessage[]) {
   ];
 
   try {
-    const model = "gemini-1.5-flash"
+    const model = "gemini-2.0-flash"
     console.log("RAG model: ", model);
     const result = await streamText({
       model: google(model),
@@ -285,8 +290,8 @@ export async function getSQLfromText(messages: CoreMessage[]) {
     const model = "gemini-1.5-flash"
     console.log("RAG model: ", model);
     const result = await generateText({
-      model: google(model),
-      // model: openai(model),
+     model: google(model),
+     //model: openai(model),
       messages: [...(prompt as CoreMessage[]), ...messages.filter((message) => message.role === 'user')],
     });
     
